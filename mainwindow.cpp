@@ -15,6 +15,50 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::paintEvent(QPaintEvent *)
+{
+    QDateTime date2 = date2.currentDateTime();
+    //QString str = date2.toString("dd-hhmmss");
+    QString str2 = date2.toString("dd");
+    if (str2!=data2)
+    {
+        file.close();
+        QDateTime date = date.currentDateTime();
+        str = date.toString("yyMMdd-hhmmss");
+        data2 = date.toString("dd");
+        file.setFileName("C:\\1\\" +str+ ".txt");
+        if (file.isOpen()) file.close();
+        if (file.exists()==false) file.open(QIODevice::WriteOnly);
+    }
+    //QImage img("/home/pi/Pictures/dangerous-animals-bear.jpg"); // загружаем картинку
+    QPainter painter(this); // определяем объект painter, который обеспечивает рисование
+    //painter.drawImage(0,0, img.scaled(this->size())); // рисуем наше изображение от 0,0 и растягиваем по всему виджету
+
+   //Q_UNUSED(event);
+    //m_timerId = startTimer(1000);
+    painter.setRenderHint(QPainter::Antialiasing);
+    int side = qMin(width(), height());
+    painter.translate(-side, 0);
+    painter.scale(side/60.0, side/60.0);
+    // Устанавливаем кисть абриса
+    painter.setPen(Qt::NoPen);
+
+    //painter.drawLine(0, -300, 0, 300);
+        painter.setPen(QPen(Qt::black, 1, Qt::SolidLine, Qt::FlatCap));
+    //painter.setRenderHint(QPainter::Antialiasing);
+
+        //painter.setPen(Qt::NoPen);
+        QColor textcolour(0, 0, 0);
+        painter.setPen(textcolour);
+        QFont font;
+        font.setPointSize(font.pointSize()-3);
+        font.setBold(true);
+        QRectF temp_num = QRectF (0, 10, 200, 30);
+        painter.setFont(font);
+        if (serial->isOpen())
+        painter.drawText(temp_num,Qt::AlignCenter,temp2);
+        else painter.drawText(temp_num,Qt::AlignCenter,"Не подключено");
+}
 
 void MainWindow::on_open_file_clicked()
 {
@@ -229,7 +273,7 @@ void MainWindow::on_open_file_clicked()
 
                 }
             }
-            qDebug() << QString::number(sec_of_day[str10-1]-sec_of_day[0], 'g', 18);
+            qDebug() << QString::number(sec_of_day[str10-1]-sec_of_day[0], 'g', 12);
 
             double min = time_of_flight[0];
             for (int i = 0; i<str10; i++)
@@ -255,10 +299,10 @@ void MainWindow::on_open_file_clicked()
                 if (sec_of_day[i] > max2) max2 = sec_of_day[i];
             }
 
-            qDebug() << QString::number(min, 'g', 18);
-            qDebug() << QString::number(max, 'g', 18);
-            qDebug() << QString::number(min2, 'g', 18);
-            qDebug() << QString::number(max2, 'g', 18);
+            qDebug() << QString::number(min, 'g', 14);
+            qDebug() << QString::number(max, 'g', 14);
+            qDebug() << QString::number(min2, 'g', 14);
+            qDebug() << QString::number(max2, 'g', 14);
         }
         else
         {
