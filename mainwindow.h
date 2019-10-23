@@ -9,7 +9,7 @@ QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
 
-class Graph;
+//class Graph;
 
 class MainWindow : public QMainWindow
 {

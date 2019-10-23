@@ -10,11 +10,11 @@ QT_BEGIN_NAMESPACE
 
 namespace Ui {class Graph;}
 
-class QIntValidator;
+//class QIntValidator;
 
 QT_END_NAMESPACE
 
-class Graph : public QDialog
+class Graph : public QMainWindow
 {
     Q_OBJECT
 
@@ -24,10 +24,10 @@ void paintEvent(QPaintEvent *) Q_DECL_OVERRIDE;
 
 public:
     explicit Graph(QWidget *parent = nullptr);
-    ~Graph() override;
+    ~Graph();// override;
     Graph graph() const;
-    double sec_of_day[256];
-    double time_of_flight[256];
+    double sec_of_day[1024];
+    double time_of_flight[1024];
     int str10;
     double min;
     double max;

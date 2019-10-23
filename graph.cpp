@@ -6,16 +6,15 @@
 #include <QtSerialPort/QSerialPortInfo>
 #include <QIntValidator>
 #include <QLineEdit>
+#include <QDebug>
 
 QT_USE_NAMESPACE
 
 
 
-Graph::Graph(QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::Graph)
+Graph::Graph(QWidget *parent) : QMainWindow(parent), ui(new Ui::Graph)
 {
-   // ui->setupUi(this);
+    ui->setupUi(this);
     QString fileName = QFileDialog::getOpenFileName(this, tr("Open Image"), "", tr(".FRD files (*.frd)"));
     //ui->file_label->setText(fileName);
     QFile file(fileName);
@@ -76,7 +75,7 @@ Graph::Graph(QWidget *parent) :
         {
             qDebug()<< "don't open file";
         }
-    repaint();
+    //repaint();
 }
 
 void Graph::timerEvent(QTimerEvent *event)
@@ -115,16 +114,16 @@ void Graph::paintEvent(QPaintEvent *)
     painter.scale(side/1050, side/1050);
     painter.setPen(Qt::NoPen);
     painter.setPen(QPen(Qt::black, 1, Qt::SolidLine, Qt::FlatCap));
-    painter.drawLine(-100, 0, 1000, 0); //OX
+    painter.drawLine(-100, 0, 2000, 0); //OX
     painter.drawLine(0, 100, 0, -1000); //OY
     for (int i=1;i<10;i++) {
         painter.drawLine(-10, i*-100, 10, i*-100);
-        painter.drawLine(i*100, 10, i*100, -10);
+        painter.drawLine(i*200, 10, i*200, -10);
     }
     painter.drawLine(-10, -980, 0, -1000);
     painter.drawLine(10, -980, 0, -1000);
-    painter.drawLine(980, -10, 1000, 0);
-    painter.drawLine(980, 10, 1000, 0);
+    painter.drawLine(1980, -10, 2000, 0);
+    painter.drawLine(1980, 10, 2000, 0);
         //painter.setPen(QPen(Qt::black, 1, Qt::SolidLine, Qt::FlatCap));
     //painter.setRenderHint(QPainter::Antialiasing);
 
@@ -138,13 +137,24 @@ void Graph::paintEvent(QPaintEvent *)
         painter.setFont(font);
         painter.drawText(temp_num,Qt::AlignCenter,"Не подключено");
 
-        double delta = max-min/1000;
-        double delta2 = max2-min2/1000;
+        double delta = 1000/(max-min);
+        double delta2 = 2000/(max2-min2);
 
+        qDebug() << str10;
+        qDebug() << min;
+        qDebug() << max;
+        qDebug() << min2;
+        qDebug() << max2;
+        QPointF point1(0,0);
         for (int i = 0; i<str10; i++)
         {
-
+            QPointF point2((sec_of_day[i]-min2)*delta2,(time_of_flight[i]-min)*-delta);
+            painter.drawLine(point1,point2);
+            //qDebug() << point1;
+            //qDebug() << point2;
+            point1=point2;
         }
+            painter.setPen(QPen(Qt::black, 1, Qt::SolidLine, Qt::FlatCap));
 }
 
 Graph::~Graph()
