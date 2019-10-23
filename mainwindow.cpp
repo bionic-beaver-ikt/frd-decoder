@@ -1,67 +1,28 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "graph.h"
 #include <QFileDialog>
 #include <QDebug>
+#include <QDateTime>
+#include "QTimer"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
-}
-
-void MainWindow::paintEvent(QPaintEvent *)
-{
-    QDateTime date2 = date2.currentDateTime();
-    //QString str = date2.toString("dd-hhmmss");
-    QString str2 = date2.toString("dd");
-    if (str2!=data2)
-    {
-        file.close();
-        QDateTime date = date.currentDateTime();
-        str = date.toString("yyMMdd-hhmmss");
-        data2 = date.toString("dd");
-        file.setFileName("C:\\1\\" +str+ ".txt");
-        if (file.isOpen()) file.close();
-        if (file.exists()==false) file.open(QIODevice::WriteOnly);
-    }
-    //QImage img("/home/pi/Pictures/dangerous-animals-bear.jpg"); // загружаем картинку
-    QPainter painter(this); // определяем объект painter, который обеспечивает рисование
-    //painter.drawImage(0,0, img.scaled(this->size())); // рисуем наше изображение от 0,0 и растягиваем по всему виджету
-
-   //Q_UNUSED(event);
-    //m_timerId = startTimer(1000);
-    painter.setRenderHint(QPainter::Antialiasing);
-    int side = qMin(width(), height());
-    painter.translate(-side, 0);
-    painter.scale(side/60.0, side/60.0);
-    // Устанавливаем кисть абриса
-    painter.setPen(Qt::NoPen);
-
-    //painter.drawLine(0, -300, 0, 300);
-        painter.setPen(QPen(Qt::black, 1, Qt::SolidLine, Qt::FlatCap));
-    //painter.setRenderHint(QPainter::Antialiasing);
-
-        //painter.setPen(Qt::NoPen);
-        QColor textcolour(0, 0, 0);
-        painter.setPen(textcolour);
-        QFont font;
-        font.setPointSize(font.pointSize()-3);
-        font.setBold(true);
-        QRectF temp_num = QRectF (0, 10, 200, 30);
-        painter.setFont(font);
-        if (serial->isOpen())
-        painter.drawText(temp_num,Qt::AlignCenter,temp2);
-        else painter.drawText(temp_num,Qt::AlignCenter,"Не подключено");
+    //delete Graph;
 }
 
 void MainWindow::on_open_file_clicked()
 {
+
     QString fileName = QFileDialog::getOpenFileName(this, tr("Open Image"), "", tr(".FRD files (*.frd)"));
     ui->file_label->setText(fileName);
     QFile file(fileName);
@@ -74,9 +35,7 @@ void MainWindow::on_open_file_clicked()
             int h8 = 0;
             int h9 = 0;
             int c0 = 0;
-            int str10 = 0;
-            double sec_of_day[256];
-            double time_of_flight[256];
+            str10 = 0;
             while(!file.atEnd())
             {
                 //читаем строку
@@ -308,4 +267,10 @@ void MainWindow::on_open_file_clicked()
         {
             qDebug()<< "don't open file";
         }
+}
+
+void MainWindow::on_pushButton_clicked()
+{
+    Graph *graph = new Graph();
+        graph->show();
 }
