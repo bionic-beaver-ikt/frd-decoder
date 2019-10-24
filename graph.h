@@ -1,7 +1,7 @@
 #ifndef GRAPH_H
 #define GRAPH_H
 
-#include <QDialog>
+#include <QMainWindow>
 #include <QtSerialPort/QSerialPort>
 
 QT_USE_NAMESPACE
@@ -24,7 +24,7 @@ void paintEvent(QPaintEvent *) Q_DECL_OVERRIDE;
 
 public:
     explicit Graph(QWidget *parent = nullptr);
-    ~Graph();// override;
+    ~Graph() override;
     Graph graph() const;
     double sec_of_day[1024];
     double time_of_flight[1024];
@@ -36,7 +36,6 @@ public:
 
 private:
     Ui::Graph *ui;
-    QIntValidator *intValidator;
 };
 
 #endif // GRAPH_H

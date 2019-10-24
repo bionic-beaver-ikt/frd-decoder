@@ -17,15 +17,18 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     graph.cpp \
+    header.cpp \
     main.cpp \
     mainwindow.cpp
 
 HEADERS += \
     graph.h \
+    header.h \
     mainwindow.h
 
 FORMS += \
     graph.ui \
+    header.ui \
     mainwindow.ui
 
 # Default rules for deployment.

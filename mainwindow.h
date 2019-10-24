@@ -20,13 +20,10 @@ public:
     ~MainWindow() override;
 
 private slots:
-    void on_open_file_clicked();
-    void on_pushButton_clicked();
+    void on_header_clicked();
+    void on_graph10_clicked();
 
 private:
     Ui::MainWindow *ui;
-    double sec_of_day[256];
-    double time_of_flight[256];
-    int str10;
 };
 #endif // MAINWINDOW_H

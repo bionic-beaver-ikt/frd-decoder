@@ -7,10 +7,9 @@
 #include <QIntValidator>
 #include <QLineEdit>
 #include <QDebug>
+#include <QMessageBox>
 
 QT_USE_NAMESPACE
-
-
 
 Graph::Graph(QWidget *parent) : QMainWindow(parent), ui(new Ui::Graph)
 {
@@ -37,10 +36,8 @@ Graph::Graph(QWidget *parent) : QMainWindow(parent), ui(new Ui::Graph)
                     //qDebug() << str.mid(22,18);
                     //qDebug() << QString::number(str.mid(22,18).toDouble(), 'g', 12);
                     str10++;
-
                 }
             }
-            qDebug() << QString::number(sec_of_day[str10-1]-sec_of_day[0], 'g', 12);
 
             min = time_of_flight[0];
             for (int i = 0; i<str10; i++)
@@ -65,15 +62,17 @@ Graph::Graph(QWidget *parent) : QMainWindow(parent), ui(new Ui::Graph)
             {
                 if (sec_of_day[i] > max2) max2 = sec_of_day[i];
             }
-
-            qDebug() << QString::number(min, 'g', 14);
-            qDebug() << QString::number(max, 'g', 14);
-            qDebug() << QString::number(min2, 'g', 14);
-            qDebug() << QString::number(max2, 'g', 14);
+            ui->textBrowser->setText("Minimum time of flight: " + (QString::number(min, 'g', 14)) + "\r\nMaximum time of flight: "+ (QString::number(max, 'g', 14)) + "\r\nTotal seconds: "+ (QString::number(max2-min2, 'g', 12))+ "\r\nData records: "+ (QString::number(str10)));
         }
         else
         {
-            qDebug()<< "don't open file";
+            QMessageBox msgBox;
+            msgBox.setText("Alarm! Алярм!");
+            msgBox.setInformativeText("Can't open file!");
+            msgBox.setStandardButtons(QMessageBox::Ok);
+            msgBox.setIcon(QMessageBox::Warning);
+            msgBox.setDefaultButton(QMessageBox::Ok);
+            msgBox.exec();
         }
     //repaint();
 }
@@ -110,41 +109,33 @@ void Graph::paintEvent(QPaintEvent *)
     painter.setRenderHint(QPainter::Antialiasing);
     double side = qMin(width(), height());
     //painter.translate(side/2, side/2);
-    painter.translate(10, side-10);
-    painter.scale(side/1050, side/1050);
+    painter.translate(75, side-25);
+    painter.scale(side/1100, side/1100);
     painter.setPen(Qt::NoPen);
     painter.setPen(QPen(Qt::black, 1, Qt::SolidLine, Qt::FlatCap));
-    painter.drawLine(-100, 0, 2000, 0); //OX
-    painter.drawLine(0, 100, 0, -1000); //OY
-    for (int i=1;i<10;i++) {
-        painter.drawLine(-10, i*-100, 10, i*-100);
-        painter.drawLine(i*200, 10, i*200, -10);
-    }
-    painter.drawLine(-10, -980, 0, -1000);
-    painter.drawLine(10, -980, 0, -1000);
-    painter.drawLine(1980, -10, 2000, 0);
-    painter.drawLine(1980, 10, 2000, 0);
-        //painter.setPen(QPen(Qt::black, 1, Qt::SolidLine, Qt::FlatCap));
-    //painter.setRenderHint(QPainter::Antialiasing);
+    painter.drawLine(-100, 0, 2040, 0); //OX
+    painter.drawLine(0, 100, 0, -1060); //OY
 
-        //painter.setPen(Qt::NoPen);
-        QColor textcolour(0, 0, 0);
-        painter.setPen(textcolour);
-        QFont font;
-        font.setPointSize(font.pointSize());
-        font.setBold(true);
-        QRectF temp_num = QRectF (10, -10, 200, -30);
-        painter.setFont(font);
-        painter.drawText(temp_num,Qt::AlignCenter,"Не подключено");
+    QFont font;
+    font.setPointSize(font.pointSize()+1);
+    font.setBold(true);
+    //QRectF temp_num = QRectF (10, -10, 200, -30);
+    painter.setFont(font);
+
+    for (int i=1;i<11;i++) {
+        painter.drawLine(-5, i*-100, 5, i*-100);
+        painter.drawLine(i*200, 5, i*200, -5);
+        painter.drawText(QRectF (i*200-100, 5, 200, 20),Qt::AlignCenter, QString::number((max2-min2)/10*i, 'g', 8));
+        painter.drawText(QRectF (-80, -i*100-10, 75, 20),Qt::AlignCenter, QString::number(min+((max-min)/10*i), 'g', 8));
+    }
+    painter.drawLine(-10, -1040, 0, -1060);
+    painter.drawLine(10, -1040, 0, -1060);
+    painter.drawLine(2020, -10, 2040, 0);
+    painter.drawLine(2020, 10, 2040, 0);
 
         double delta = 1000/(max-min);
         double delta2 = 2000/(max2-min2);
 
-        qDebug() << str10;
-        qDebug() << min;
-        qDebug() << max;
-        qDebug() << min2;
-        qDebug() << max2;
         QPointF point1(0,0);
         for (int i = 0; i<str10; i++)
         {
