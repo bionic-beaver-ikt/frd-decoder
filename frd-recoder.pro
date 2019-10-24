@@ -35,3 +35,13 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+DISTFILES += \
+    favicon.ico
+
+win32:RC_ICONS += favicon.ico
+VERSION = 1.00
+QMAKE_TARGET_COMPANY = VSF FGUP "VNIIFTRI"
+QMAKE_TARGET_PRODUCT = FRD-Decoder
+QMAKE_TARGET_DESCRIPTION = Decoder of FRD-files
+QMAKE_TARGET_COPYRIGHT = (c) Vyacheslav Razdobreev

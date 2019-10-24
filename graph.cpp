@@ -14,7 +14,7 @@ QT_USE_NAMESPACE
 Graph::Graph(QWidget *parent) : QMainWindow(parent), ui(new Ui::Graph)
 {
     ui->setupUi(this);
-    QString fileName = QFileDialog::getOpenFileName(this, tr("Open Image"), "", tr(".FRD files (*.frd)"));
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Open FRD File"), "", tr(".FRD files (*.frd)"));
     //ui->file_label->setText(fileName);
     QFile file(fileName);
         if(file.open(QIODevice::ReadOnly |QIODevice::Text))
@@ -66,13 +66,14 @@ Graph::Graph(QWidget *parent) : QMainWindow(parent), ui(new Ui::Graph)
         }
         else
         {
-            QMessageBox msgBox;
+            QMessageBox::warning(this, "Alarm! Алярм!", "Can't open file!", QMessageBox::Ok);
+            /*QMessageBox msgBox;
             msgBox.setText("Alarm! Алярм!");
             msgBox.setInformativeText("Can't open file!");
             msgBox.setStandardButtons(QMessageBox::Ok);
             msgBox.setIcon(QMessageBox::Warning);
             msgBox.setDefaultButton(QMessageBox::Ok);
-            msgBox.exec();
+            msgBox.exec();*/
         }
     //repaint();
 }
