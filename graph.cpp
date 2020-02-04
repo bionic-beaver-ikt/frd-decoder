@@ -42,6 +42,7 @@ Graph::Graph(QWidget *parent) : QMainWindow(parent), ui(new Ui::Graph)
             min = time_of_flight[0];
             for (int i = 0; i<str10; i++)
             {
+qDebug() << QString::number(time_of_flight[i], 'g', 16);
                 if (time_of_flight[i] < min) min = time_of_flight[i];
             }
 
@@ -52,8 +53,10 @@ Graph::Graph(QWidget *parent) : QMainWindow(parent), ui(new Ui::Graph)
             }
 
             min2 = sec_of_day[0];
+
             for (int i = 0; i<str10; i++)
             {
+
                 if (sec_of_day[i] < min2) min2 = sec_of_day[i];
             }
 

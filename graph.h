@@ -26,8 +26,8 @@ public:
     explicit Graph(QWidget *parent = nullptr);
     ~Graph() override;
     Graph graph() const;
-    double sec_of_day[1024];
-    double time_of_flight[1024];
+    double sec_of_day[65535];
+    double time_of_flight[65535];
     int str10;
     double min;
     double max;
